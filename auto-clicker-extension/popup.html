@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Auto Clicker</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 380px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 0;
+    }
+
+    .container {
+      padding: 20px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    }
+
+    h1 {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .subtitle {
+      font-size: 12px;
+      opacity: 0.9;
+    }
+
+    .section {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-title::before {
+      content: '';
+      width: 4px;
+      height: 16px;
+      background: #ffd700;
+      border-radius: 2px;
+    }
+
+    .status-indicator {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-right: 8px;
+      animation: pulse 2s infinite;
+    }
+
+    .status-indicator.idle {
+      background: #95a5a6;
+      animation: none;
+    }
+
+    .status-indicator.selecting {
+      background: #f39c12;
+    }
+
+    .status-indicator.running {
+      background: #2ecc71;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      font-size: 13px;
+    }
+
+    .info-label {
+      opacity: 0.9;
+    }
+
+    .info-value {
+      font-weight: 600;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-family: 'Courier New', monospace;
+    }
+
+    .mode-selector {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .mode-btn {
+      flex: 1;
+      padding: 10px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .mode-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.5);
+    }
+
+    .mode-btn.active {
+      background: rgba(255, 215, 0, 0.3);
+      border-color: #ffd700;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+    }
+
+    .interval-input {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .interval-group {
+      flex: 1;
+    }
+
+    .interval-group label {
+      display: block;
+      font-size: 11px;
+      margin-bottom: 5px;
+      opacity: 0.9;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 8px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    input[type="number"]:focus {
+      outline: none;
+      border-color: #ffd700;
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    input[type="number"]::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: 2px solid white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+      color: white;
+    }
+
+    .btn-success:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+      color: white;
+    }
+
+    .btn-danger:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .help-text {
+      font-size: 11px;
+      opacity: 0.8;
+      margin-top: 8px;
+      line-height: 1.4;
+      padding: 8px;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 6px;
+      border-left: 3px solid #ffd700;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .stat-box {
+      background: rgba(0, 0, 0, 0.2);
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      opacity: 0.8;
+      margin-bottom: 5px;
+    }
+
+    .stat-value {
+      font-size: 20px;
+      font-weight: 700;
+      font-family: 'Courier New', monospace;
+      color: #ffd700;
+    }
+
+    .element-preview {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 10px;
+      border-radius: 6px;
+      font-family: 'Courier New', monospace;
+      font-size: 11px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      margin-top: 8px;
+      border: 1px solid rgba(255, 215, 0, 0.3);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🖱️ Smart Auto Clicker</h1>
+      <p class="subtitle">Click elements automatically with anti-bot detection</p>
+    </header>
+
+    <!-- Status Section -->
+    <div class="section">
+      <div class="section-title">
+        <span class="status-indicator idle" id="statusIndicator"></span>
+        Status
+      </div>
+      <div class="info-row">
+        <span class="info-label">Current State:</span>
+        <span class="info-value" id="statusText">Idle</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Target Element:</span>
+        <span class="info-value" id="targetStatus">Not Set</span>
+      </div>
+      <div id="elementPreview" class="element-preview hidden"></div>
+    </div>
+
+    <!-- Click Mode Section -->
+    <div class="section">
+      <div class="section-title">Click Mode</div>
+      <div class="mode-selector">
+        <button class="mode-btn active" data-mode="fixed" id="fixedModeBtn">
+          ⏱️ Fixed Interval
+        </button>
+        <button class="mode-btn" data-mode="random" id="randomModeBtn">
+          🎲 Random Interval
+        </button>
+      </div>
+
+      <!-- Fixed Interval -->
+      <div id="fixedIntervalInput">
+        <div class="interval-group">
+          <label>Interval (milliseconds)</label>
+          <input type="number" id="fixedInterval" value="1000" min="100" max="60000" step="100">
+        </div>
+        <p class="help-text">💡 Click every X milliseconds (1000ms = 1 second)</p>
+      </div>
+
+      <!-- Random Interval -->
+      <div id="randomIntervalInput" class="hidden">
+        <div class="interval-input">
+          <div class="interval-group">
+            <label>Min (ms)</label>
+            <input type="number" id="randomMin" value="800" min="100" max="60000" step="100">
+          </div>
+          <div class="interval-group">
+            <label>Max (ms)</label>
+            <input type="number" id="randomMax" value="2000" min="100" max="60000" step="100">
+          </div>
+        </div>
+        <p class="help-text">🎲 Random interval between min and max to avoid bot detection</p>
+      </div>
+    </div>
+
+    <!-- Statistics Section -->
+    <div class="section" id="statsSection" class="hidden">
+      <div class="section-title">Statistics</div>
+      <div class="stats">
+        <div class="stat-box">
+          <div class="stat-label">Total Clicks</div>
+          <div class="stat-value" id="clickCount">0</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Running Time</div>
+          <div class="stat-value" id="runningTime">0s</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="section">
+      <button class="btn btn-primary" id="selectElementBtn">
+        🎯 Select Element to Click
+      </button>
+      <button class="btn btn-success hidden" id="startBtn">
+        ▶️ Start Auto Clicking
+      </button>
+      <button class="btn btn-danger hidden" id="stopBtn">
+        ⏸️ Stop Auto Clicking
+      </button>
+      <button class="btn btn-primary hidden" id="resetBtn">
+        🔄 Reset & Select New Element
+      </button>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

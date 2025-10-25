@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>สร้างไอคอน TikTok Downloader</title>
+</head>
+<body>
+  <h2>คลิกปุ่มเพื่อสร้างและดาวน์โหลดไอคอน</h2>
+  <button onclick="createIcons()">สร้างไอคอน</button>
+  <div id="preview" style="margin-top: 20px;"></div>
+
+  <script>
+    function createIcon(size) {
+      const canvas = document.createElement('canvas');
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext('2d');
+
+      // สร้างพื้นหลังไล่สี (gradient)
+      const gradient = ctx.createLinearGradient(0, 0, size, size);
+      gradient.addColorStop(0, '#00f2ea'); // สีฟ้า TikTok
+      gradient.addColorStop(0.5, '#ff0050'); // สีชมพู TikTok
+      gradient.addColorStop(1, '#000000'); // สีดำ
+      
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, size, size);
+
+      // วาดสัญลักษณ์โน้ตดนตรี
+      ctx.fillStyle = 'white';
+      ctx.font = `bold ${size * 0.6}px Arial`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('🎵', size / 2, size / 2);
+
+      // วาดลูกศรดาวน์โหลด
+      ctx.font = `bold ${size * 0.3}px Arial`;
+      ctx.fillText('⬇', size / 2, size * 0.75);
+
+      return canvas;
+    }
+
+    function downloadCanvas(canvas, filename) {
+      canvas.toBlob(function(blob) {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        a.click();
+        URL.revokeObjectURL(url);
+      });
+    }
+
+    function createIcons() {
+      const preview = document.getElementById('preview');
+      preview.innerHTML = '<h3>กำลังสร้างไอคอน...</h3>';
+
+      const sizes = [16, 48, 128];
+      const canvases = [];
+
+      sizes.forEach(size => {
+        const canvas = createIcon(size);
+        canvases.push(canvas);
+        preview.appendChild(canvas);
+        preview.appendChild(document.createElement('br'));
+        
+        setTimeout(() => {
+          downloadCanvas(canvas, `icon${size}.png`);
+        }, 500);
+      });
+
+      setTimeout(() => {
+        preview.innerHTML += '<p style="color: green;">✅ ไอคอนถูกดาวน์โหลดแล้ว! นำไฟล์ไปใส่ในโฟลเดอร์ download-ticktok แล้วเปิด manifest.json ที่มีไอคอนคืนมา</p>';
+      }, 2000);
+    }
+  </script>
+</body>
+</html>

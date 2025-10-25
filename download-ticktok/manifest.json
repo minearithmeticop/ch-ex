@@ -1,0 +1,30 @@
+{
+  "manifest_version": 3,
+  "name": "TikTok Video Downloader",
+  "version": "1.0",
+  "description": "ดาวน์โหลดวิดีโอ TikTok แบบไม่มีลายน้ำ",
+  "permissions": [
+    "activeTab",
+    "downloads"
+  ],
+  "host_permissions": [
+    "https://*.tiktok.com/*",
+    "https://*.tiktokcdn.com/*",
+    "https://www.tikwm.com/*",
+    "https://tikdownloader.io/*",
+    "https://api.tikmate.app/*"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://*.tiktok.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_end"
+    }
+  ]
+}

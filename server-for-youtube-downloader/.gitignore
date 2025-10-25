@@ -1,0 +1,26 @@
+# Ignore dependencies
+node_modules/
+
+# Ignore temp downloads
+temp/
+*.mp4
+*.mp3
+*.webm
+
+# Ignore logs
+*.log
+npm-debug.log*
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# Ignore IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Ignore env
+.env
+.env.local

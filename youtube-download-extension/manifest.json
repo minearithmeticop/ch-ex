@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "YouTube Video Downloader (Local Server)",
+  "version": "2.0.0",
+  "description": "ดาวน์โหลดวิดีโอ YouTube ด้วย Local Server - ไม่มีข้อจำกัด คุณภาพสูง",
+  "permissions": [
+    "activeTab",
+    "downloads"
+  ],
+  "host_permissions": [
+    "https://*.youtube.com/*",
+    "http://localhost/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "YouTube Downloader (Local)"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://*.youtube.com/*", "https://youtube.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
+}

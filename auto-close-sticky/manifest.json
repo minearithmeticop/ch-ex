@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "Auto Sticky Close Scanner",
+  "version": "1.0",
+  "description": "Automatically scan and click all elements with 'sticky-close' class",
+  "permissions": [
+    "activeTab",
+    "scripting"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Auto Sticky Close Scanner"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://www.go-manga.com/*", "*://go-manga.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_end",
+      "all_frames": true
+    }
+  ]
+}

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        body {
+            width: 300px;
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            margin: 0;
+        }
+        
+        .container {
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 18px;
+            margin: 0 0 20px 0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .button {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            width: 100%;
+            margin: 5px 0;
+        }
+        
+        .button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .button:active {
+            transform: translateY(0);
+        }
+        
+        .start-btn {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            border-color: #4CAF50;
+        }
+        
+        .stop-btn {
+            background: linear-gradient(45deg, #f44336, #da190b);
+            border-color: #f44336;
+        }
+        
+        .status {
+            margin: 15px 0;
+            font-size: 13px;
+            padding: 10px;
+            border-radius: 15px;
+            background: rgba(0,0,0,0.2);
+            backdrop-filter: blur(5px);
+        }
+        
+        .status.active {
+            background: linear-gradient(45deg, rgba(76, 175, 80, 0.3), rgba(69, 160, 73, 0.3));
+            border: 1px solid rgba(76, 175, 80, 0.5);
+        }
+        
+        .status.error {
+            background: linear-gradient(45deg, rgba(244, 67, 54, 0.3), rgba(218, 25, 11, 0.3));
+            border: 1px solid rgba(244, 67, 54, 0.5);
+            color: #ffcccc;
+        }
+        
+        #auto-status {
+            display: none;
+            font-size: 11px;
+            margin-bottom: 5px;
+            color: #4CAF50;
+        }
+        
+        #manual-status {
+            font-size: 13px;
+        }
+        
+        .count {
+            font-weight: bold;
+            color: #ffd700;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        }
+        
+        .icon {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">🎯</div>
+        <h1>Go-Manga Auto Scanner</h1>
+        
+        <div id="status" class="status">
+            <div id="auto-status">🤖 โหมดอัตโนมัติสำหรับ Go-Manga</div>
+            <div id="manual-status">พร้อมใช้งาน</div>
+        </div>
+        
+        <button id="startBtn" class="button start-btn">
+            🚀 เริ่มสแกน
+        </button>
+        
+        <button id="stopBtn" class="button stop-btn" style="display: none;">
+            ⏹️ หยุดสแกน
+        </button>
+        
+        <button id="manualBtn" class="button">
+            👆 คลิกครั้งเดียว
+        </button>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>
